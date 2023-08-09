@@ -1,2 +1,2 @@
 # redes-computadores-2023-2
-Scripts para a disciplina de Redes de Computadores do Curso de Sistemas de Informação
+Redes de Computadores (SI) 2023-2 (Ifes Campus Cachoeiro)
