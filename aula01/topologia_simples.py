@@ -4,6 +4,14 @@ from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 
 
+# Bandwidth 1Gbps
+BW = 1000
+
+def activate_switch(switch):
+    cmd = f'ovs-ofctl add-flow {switch.name} "actions=output:NORMAL"'
+    switch.cmd(cmd)
+
+
 def topology(remote_controller):
     "Create a network."
     net = Mininet_wifi()
@@ -12,25 +20,25 @@ def topology(remote_controller):
 
     h1 = net.addHost("h1", ip="10.0.1.1/24")
     h2 = net.addHost("h2", ip="10.0.1.2/24")
-    server1 = net.addHost("server1", ip="10.0.1.10/24")
+    servidor1 = net.addHost("servidor1", ip="10.0.1.10/24")
 
-    info("*** Adding P4Switches (core)\n")
+    info("*** Adding Switches\n")
 
     switch1 = net.addSwitch("switch1")
 
     info("*** Creating links\n")
 
-    net.addLink(h1, switch1, bw=1000)
-    net.addLink(h2, switch1, bw=1000)
-    net.addLink(server1, switch1, bw=1000)
+    net.addLink(h1, switch1, bw=BW)
+    net.addLink(h2, switch1, bw=BW)
+    net.addLink(servidor1, switch1, bw=BW)
 
     info("*** Starting network\n")
     net.start()
     net.staticArp()
 
-    info("*** Applying switches configurations\n")
+    info("*** Activating switches\n")
 
-    switch1.cmd("ovs-ofctl add-flow {} \"actions=output:NORMAL\"".format(switch1.name))
+    activate_switch(switch1)
 
     info("*** Running CLI\n")
     CLI(net)
